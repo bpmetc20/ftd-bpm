@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="ftd-project" name="FTD Project" isExecutable="true">
+    <startEvent id="StartProject" name="Start Project" flowable:formFieldValidation="true"></startEvent>
+    <serviceTask id="CreateProject" name="Create Project" flowable:class="com.ftd.bpm.delegate.CreateProjectDelegate"></serviceTask>
+    <serviceTask id="InitProjectSetup" name="Init Project Setup" flowable:class="com.ftd.bpm.delegate.InitProjectSetupDelegate"></serviceTask>
+    <sequenceFlow id="sid-76574D24-659F-410F-A892-05A5B77EB6BD" sourceRef="StartProject" targetRef="InitProjectSetup"></sequenceFlow>
+    <serviceTask id="AssignTeam" name="Assign Team" flowable:class="com.ftd.bpm.delegate.AssignTeamDelegate"></serviceTask>
+    <sequenceFlow id="sid-B0A8DB4B-4153-41F3-9078-E25B967C815E" sourceRef="CreateProject" targetRef="AssignTeam"></sequenceFlow>
+    <sequenceFlow id="sid-B7483995-67FE-4935-BAA7-DA65B70750EF" sourceRef="AssignTeam" targetRef="AssignTasks"></sequenceFlow>
+    <serviceTask id="AssignTasks" name="Assign Tasks" flowable:class="com.ftd.bpm.delegate.AssignTasksDelegate"></serviceTask>
+    <endEvent id="sid-6EC21974-FAE0-4FB5-AD67-04735E2A1B2A"></endEvent>
+    <sequenceFlow id="sid-B7EF9985-CA00-4A53-BE17-36E16EE2B54A" sourceRef="AssignTasks" targetRef="sid-6EC21974-FAE0-4FB5-AD67-04735E2A1B2A"></sequenceFlow>
+    <subProcess id="SetupProjectTerms" name="Setup Project Terms">
+      <userTask id="ReviewPO" name="Review PO" flowable:formFieldValidation="true"></userTask>
+      <userTask id="EscalatePO" name="Escalate PO" flowable:formFieldValidation="true">
+        <extensionElements>
+          <flowable:taskListener event="complete" class="com.ftd.bpm.listener.EscalatePOEventListener" />
+        </extensionElements>
+      </userTask>
+      <exclusiveGateway id="POAccepted" name="PO Accepted?"></exclusiveGateway>
+      <serviceTask id="POAcceptanceNotification" name="Accept PO Notification" flowable:class="com.ftd.bpm.delegate.POAcceptanceNotificationDelegate"></serviceTask>
+      <userTask id="NegotiatePO" name="Negoatiate PO" flowable:formFieldValidation="true">
+        <extensionElements>
+          <flowable:taskListener event="complete" class="com.ftd.bpm.listener.EscalatePOEventListener" />
+        </extensionElements>
+      </userTask>
+      <exclusiveGateway id="NegoatiatedPO" name="PO Negotiated?"></exclusiveGateway>
+      <serviceTask id="EndProjectSetup" name="End Project Setup" flowable:class="com.ftd.bpm.delegate.EndProjectSetupDelegate"></serviceTask>
+      <endEvent id="ProjectSetupCancelled" name="Project Setup Cancelled"></endEvent>
+      <endEvent id="ProjectSetupDone" name="Project Setup Done"></endEvent>
+      <startEvent id="sid-49408120-9FD3-40C7-BF6F-A6DE4B8EE0AD" flowable:formFieldValidation="true"></startEvent>
+      <dataObject id="customerId" name="Customer ID" itemSubjectRef="xsd:string">
+        <extensionElements>
+          <flowable:value></flowable:value>
+        </extensionElements>
+      </dataObject>
+      <sequenceFlow id="sid-5B45179A-D777-48A9-A1DD-9BDBB14B0297" sourceRef="ReviewPO" targetRef="EscalatePO"></sequenceFlow>
+      <sequenceFlow id="sid-6B7D9908-3496-4B37-8211-83E0273BE237" sourceRef="EscalatePO" targetRef="POAccepted"></sequenceFlow>
+      <sequenceFlow id="sid-9BDDA5C9-C80C-4743-AB39-F01556BEA10A" sourceRef="NegotiatePO" targetRef="NegoatiatedPO"></sequenceFlow>
+      <sequenceFlow id="sid-840CA289-DA67-4330-98E0-3AED149A1FF4" sourceRef="EndProjectSetup" targetRef="ProjectSetupCancelled"></sequenceFlow>
+      <sequenceFlow id="sid-97065DBB-7CA3-4890-832A-04A194EE88AC" sourceRef="POAcceptanceNotification" targetRef="ProjectSetupDone"></sequenceFlow>
+      <sequenceFlow id="sid-87EA5FD0-5108-4E70-9675-4358490EDE3C" sourceRef="sid-49408120-9FD3-40C7-BF6F-A6DE4B8EE0AD" targetRef="ReviewPO"></sequenceFlow>
+      <sequenceFlow id="sid-D1743CA3-53D2-4A7B-BD29-C69D0331ED9A" name="Yes" sourceRef="POAccepted" targetRef="POAcceptanceNotification">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accepted == true}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="POTermsRejected" name="No" sourceRef="POAccepted" targetRef="NegotiatePO">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accepted == false}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="PONegotiated" name="Yes" sourceRef="NegoatiatedPO" targetRef="ReviewPO">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${negotiated == false}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="PONotNegotiated" name="No" sourceRef="NegoatiatedPO" targetRef="EndProjectSetup">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${negotiated == true}]]></conditionExpression>
+      </sequenceFlow>
+    </subProcess>
+    <sequenceFlow id="sid-8E939EC9-143A-4CB1-8B99-8FD9B11A15F0" sourceRef="SetupProjectTerms" targetRef="CreateProject"></sequenceFlow>
+    <sequenceFlow id="sid-F4294776-8891-4C40-83FF-83E8017B1C1A" sourceRef="InitProjectSetup" targetRef="SetupProjectTerms"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_ftd-project">
+    <bpmndi:BPMNPlane bpmnElement="ftd-project" id="BPMNPlane_ftd-project">
+      <bpmndi:BPMNShape bpmnElement="StartProject" id="BPMNShape_StartProject">
+        <omgdc:Bounds height="30.0" width="30.0" x="110.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="CreateProject" id="BPMNShape_CreateProject">
+        <omgdc:Bounds height="44.29682672462695" width="97.53248414140035" x="780.0" y="205.34004448082263"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="InitProjectSetup" id="BPMNShape_InitProjectSetup">
+        <omgdc:Bounds height="80.0" width="100.0" x="75.0" y="187.48845784313613"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="AssignTeam" id="BPMNShape_AssignTeam">
+        <omgdc:Bounds height="48.199609687457254" width="97.53087563863096" x="907.4074047365089" y="102.43337454553547"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="AssignTasks" id="BPMNShape_AssignTasks">
+        <omgdc:Bounds height="49.38051694117749" width="100.0" x="1049.9382803751398" y="101.84292091867536"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-6EC21974-FAE0-4FB5-AD67-04735E2A1B2A" id="BPMNShape_sid-6EC21974-FAE0-4FB5-AD67-04735E2A1B2A">
+        <omgdc:Bounds height="28.0" width="28.0" x="1242.7901197575047" y="188.46913520651353"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="SetupProjectTerms" id="BPMNShape_SetupProjectTerms">
+        <omgdc:Bounds height="334.9769156862722" width="537.6876349419867" x="210.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ReviewPO" id="BPMNShape_ReviewPO">
+        <omgdc:Bounds height="59.06635877852821" width="85.13838391304824" x="285.0" y="97.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EscalatePO" id="BPMNShape_EscalatePO">
+        <omgdc:Bounds height="61.526417879322395" width="75.30864206301146" x="420.0" y="95.76997044960291"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="POAccepted" id="BPMNShape_POAccepted">
+        <omgdc:Bounds height="40.0" width="40.0" x="540.0" y="106.53317938926412"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="POAcceptanceNotification" id="BPMNShape_POAcceptanceNotification">
+        <omgdc:Bounds height="50.65834944369635" width="97.5308642047986" x="630.0" y="101.20400466741594"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="NegotiatePO" id="BPMNShape_NegotiatePO">
+        <omgdc:Bounds height="50.65118679981498" width="98.76543419913526" x="510.6172829004324" y="222.22222156812464"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="NegoatiatedPO" id="BPMNShape_NegoatiatedPO">
+        <omgdc:Bounds height="40.0" width="40.0" x="307.56919195652415" y="227.54781496803216"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndProjectSetup" id="BPMNShape_EndProjectSetup">
+        <omgdc:Bounds height="52.0" width="106.0" x="425.8438174709934" y="296.29629542416615"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ProjectSetupCancelled" id="BPMNShape_ProjectSetupCancelled">
+        <omgdc:Bounds height="28.0" width="28.0" x="615.0" y="308.29629542416615"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ProjectSetupDone" id="BPMNShape_ProjectSetupDone">
+        <omgdc:Bounds height="28.0" width="28.0" x="664.7654321023992" y="213.4884578431361"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-49408120-9FD3-40C7-BF6F-A6DE4B8EE0AD" id="BPMNShape_sid-49408120-9FD3-40C7-BF6F-A6DE4B8EE0AD">
+        <omgdc:Bounds height="30.0" width="30.0" x="226.8" y="210.2"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-B7483995-67FE-4935-BAA7-DA65B70750EF" id="BPMNEdge_sid-B7483995-67FE-4935-BAA7-DA65B70750EF">
+        <omgdi:waypoint x="1004.8882803751346" y="126.53317938926409"></omgdi:waypoint>
+        <omgdi:waypoint x="1049.9382803751384" y="126.53317938926409"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="POTermsRejected" id="BPMNEdge_POTermsRejected">
+        <omgdi:waypoint x="560.0" y="146.4749433904087"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="222.22222156812464"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-840CA289-DA67-4330-98E0-3AED149A1FF4" id="BPMNEdge_sid-840CA289-DA67-4330-98E0-3AED149A1FF4">
+        <omgdi:waypoint x="531.7938174709012" y="322.29629542416615"></omgdi:waypoint>
+        <omgdi:waypoint x="615.0" y="322.29629542416615"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-97065DBB-7CA3-4890-832A-04A194EE88AC" id="BPMNEdge_sid-97065DBB-7CA3-4890-832A-04A194EE88AC">
+        <omgdi:waypoint x="678.7654321023992" y="151.81235411111228"></omgdi:waypoint>
+        <omgdi:waypoint x="678.7654321023992" y="213.4884578431361"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-87EA5FD0-5108-4E70-9675-4358490EDE3C" id="BPMNEdge_sid-87EA5FD0-5108-4E70-9675-4358490EDE3C">
+        <omgdi:waypoint x="241.8" y="210.2"></omgdi:waypoint>
+        <omgdi:waypoint x="241.8" y="126.53317938926409"></omgdi:waypoint>
+        <omgdi:waypoint x="285.0" y="126.53317938926409"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-D1743CA3-53D2-4A7B-BD29-C69D0331ED9A" id="BPMNEdge_sid-D1743CA3-53D2-4A7B-BD29-C69D0331ED9A">
+        <omgdi:waypoint x="560.0" y="106.53317938926412"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.7654321023992" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.7654321023992" y="101.20400466741594"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-76574D24-659F-410F-A892-05A5B77EB6BD" id="BPMNEdge_sid-76574D24-659F-410F-A892-05A5B77EB6BD">
+        <omgdi:waypoint x="125.0" y="119.94999878212629"></omgdi:waypoint>
+        <omgdi:waypoint x="125.0" y="187.48845784313613"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="PONegotiated" id="BPMNEdge_PONegotiated">
+        <omgdi:waypoint x="327.56919195652415" y="227.54781496803216"></omgdi:waypoint>
+        <omgdi:waypoint x="327.56919195652415" y="156.0163587785282"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="PONotNegotiated" id="BPMNEdge_PONotNegotiated">
+        <omgdi:waypoint x="327.56919195652415" y="267.4844880441732"></omgdi:waypoint>
+        <omgdi:waypoint x="327.56919195652415" y="322.29629542416615"></omgdi:waypoint>
+        <omgdi:waypoint x="425.8438174709934" y="322.29629542416615"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-B7EF9985-CA00-4A53-BE17-36E16EE2B54A" id="BPMNEdge_sid-B7EF9985-CA00-4A53-BE17-36E16EE2B54A">
+        <omgdi:waypoint x="1149.8882803751399" y="150.7152419523"></omgdi:waypoint>
+        <omgdi:waypoint x="1244.176970423367" y="196.36729218105856"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-9BDDA5C9-C80C-4743-AB39-F01556BEA10A" id="BPMNEdge_sid-9BDDA5C9-C80C-4743-AB39-F01556BEA10A">
+        <omgdi:waypoint x="510.61728290040094" y="247.54781496803216"></omgdi:waypoint>
+        <omgdi:waypoint x="347.4734638824403" y="247.54781496803216"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-F4294776-8891-4C40-83FF-83E8017B1C1A" id="BPMNEdge_sid-F4294776-8891-4C40-83FF-83E8017B1C1A">
+        <omgdi:waypoint x="125.0" y="227.4884578431361"></omgdi:waypoint>
+        <omgdi:waypoint x="209.9999999998571" y="227.4884578431361"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-B0A8DB4B-4153-41F3-9078-E25B967C815E" id="BPMNEdge_sid-B0A8DB4B-4153-41F3-9078-E25B967C815E">
+        <omgdi:waypoint x="828.7662420707002" y="205.34004448082263"></omgdi:waypoint>
+        <omgdi:waypoint x="828.7662420707002" y="126.53317938926409"></omgdi:waypoint>
+        <omgdi:waypoint x="907.4074047365089" y="126.53317938926409"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-5B45179A-D777-48A9-A1DD-9BDBB14B0297" id="BPMNEdge_sid-5B45179A-D777-48A9-A1DD-9BDBB14B0297">
+        <omgdi:waypoint x="370.08838391304823" y="126.5331793892641"></omgdi:waypoint>
+        <omgdi:waypoint x="419.99999999999164" y="126.5331793892641"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-6B7D9908-3496-4B37-8211-83E0273BE237" id="BPMNEdge_sid-6B7D9908-3496-4B37-8211-83E0273BE237">
+        <omgdi:waypoint x="495.2586420630115" y="126.53317938926412"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="126.53317938926412"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-8E939EC9-143A-4CB1-8B99-8FD9B11A15F0" id="BPMNEdge_sid-8E939EC9-143A-4CB1-8B99-8FD9B11A15F0">
+        <omgdi:waypoint x="747.6376349419038" y="227.4884578431361"></omgdi:waypoint>
+        <omgdi:waypoint x="779.9999999999116" y="227.4884578431361"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
