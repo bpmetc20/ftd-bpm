@@ -22,4 +22,5 @@ $ java -jar target/bpm-0.0.1-SNAPSHOT.jar
 ```
 # Use it
 To be added
+
 [maven-download]: http://maven.apache.org/install.html
