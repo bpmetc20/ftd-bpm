@@ -41,34 +41,4 @@ public class BpmController {
         this.repositoryService = repositoryService;
     }
 
-    @GetMapping(path = "/ftd-api/process")
-    public String startProcess() {
-        Map<String, Object> vars = new HashMap<>();
-        vars.put("customerId", "1");
-        vars.put("accepted", false);
-        vars.put("negotiated", false);
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("ftd-project", vars);
-        log.info("created process instance " + processInstance.getId());
-        return processInstance.getDeploymentId();
-    }
-
-    @GetMapping(path = "/ftd-api/process/active")
-    public String getActiveProcesses() {
-        List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().active().list();
-        return !processInstances.isEmpty()? processInstances.get(0).getDeploymentId() : "-1";
-    }
-
-    @GetMapping(path = "/ftd-api/{deploymentId}/task/complete")
-    public String completeActiveTask(@PathVariable("deploymentId") String deploymentId) {
-        List<Task> tasks = taskService.createTaskQuery().deploymentId(deploymentId).list();
-        String result;
-        if ( !tasks.isEmpty() ) {
-            taskService.claim(tasks.get(0).getId(), "bpmuser");
-            taskService.complete(tasks.get(0).getId());
-            result = "OK";
-        } else {
-            result = "not found";
-        }
-        return result;
-    }
 }
