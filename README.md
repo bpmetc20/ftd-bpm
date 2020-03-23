@@ -67,13 +67,13 @@ GET http://localhost:8091/process-api/runtime/tasks
 ```
 ##### Show task
 ```sh
-GET http://localhost:8091/process-api/runtime/tasks/taskId
-taskId - as defined in response from Show active tasks (http://localhost:8091/process-api/runtime/tasks)
+GET http://localhost:8091/process-api/runtime/tasks/{task-id}
+task-id - as defined in response from Show active tasks (http://localhost:8091/process-api/runtime/tasks)
 ```
 ##### Claim task
 ```sh
 POST http://localhost:8091/process-api/runtime/tasks/{task-id}
-taskId - as defined in response from Show active tasks (http://localhost:8091/process-api/runtime/tasks)
+task-id - as defined in response from Show active tasks (http://localhost:8091/process-api/runtime/tasks)
 
 Body
 {
@@ -84,7 +84,7 @@ Body
 ##### Complete task
 ```sh
 POST http://localhost:8091/process-api/runtime/tasks/{task-id}
-taskId - as defined in response from Show active tasks (http://localhost:8091/process-api/runtime/tasks)
+task-id - as defined in response from Show active tasks (http://localhost:8091/process-api/runtime/tasks)
 {
   "action" : "complete",
    "variables": [
