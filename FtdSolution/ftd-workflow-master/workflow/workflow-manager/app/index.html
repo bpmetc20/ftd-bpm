@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel='shortcut icon' type='image/x-icon' href='img/icons/favicon.ico' />
+
+	<title>GRNET-WORKFLOW</title>
+	<link rel="stylesheet" href="css/lib.css" />
+	<link rel="stylesheet" href="css/main.css" />
+	<link rel="stylesheet" href="css/print.css" />
+	<link rel="stylesheet" href="css/trix.css">
+	<link rel="stylesheet" href="css/angular-gridster.css" />
+	<link rel="stylesheet" href="css/material-datetimepicker.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&subset=greek">
+
+	<style type="text/css">
+		[ng\:cloak],
+		[ng-cloak],
+		[data-ng-cloak],
+		[x-ng-cloak],
+		.ng-cloak {
+			display: none !important;
+		}
+	</style>
+
+</head>
+
+<body ng-controller="NavBarCtrl" md-swipe-right="onSwipeRight()" md-swipe-left="onSwipeLeft()" class="noselect" data-ng-init="initializePages()">
+
+	<div layout="row" flex class="main-wrapper">
+
+		<!-- Navigation Menu -->
+		<md-sidenav id="navbar" flex="20" class="md-sidenav-left md-whiteframe-z3 nav-bar" md-component-id="navbar" md-is-locked-open="$mdMedia('gt-md')"
+		 ng-cloak ng-if="!isPrint">
+
+			<md-list flex class="nav-list">
+
+				<md-list-item class="navItem" ng-repeat="page in pages" ng-click="goTo(page.path)" ng-if="!page.disabled" ng-class="{ 'navItemSelected' : isSelected(page.path), 'navItemDisabled' : page.disabled }">
+
+					<div flex>
+						<md-icon ng-if="page.icon" md-svg-icon="{{'img/icons/' + page.icon}}" style="color:{{page.color}}"></md-icon>
+						<p flex>{{page.title | translate}}</p>
+					</div>
+
+					<md-divider></md-divider>
+
+				</md-list-item>
+
+				<md-list-item ng-click="logout()" class="navItem">
+
+					<div flex>
+						<md-icon md-svg-icon="img/icons/logout.svg"></md-icon>
+						<p flex>{{ 'logout' | translate }}</p>
+					</div>
+
+				</md-list-item>
+
+			</md-list>
+		</md-sidenav>
+
+		<div layout="column" ng-view ng-cloak flex style="height: 100%; width:100%"></div>
+
+	</div>
+
+	<script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtmaS-D4KkoCa7VQIXlyveZh8Ls6XSDD8"></script>
+	<script type="text/javascript" src="moment.min.js"></script>
+
+	<!--<script type="text/javascript" async defer src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>-->
+	<!--<script type="text/javascript" async defer src="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.2/trix.js"></script>-->
+	<!--<script type="text/javascript" src="js/angular-trix.min.js"></script>-->
+
+	<script type="text/javascript" src="js/angular-sanitize.js"></script>
+	<!-- For development mode-->
+	<script data-main="js/requireConf" type="text/javascript" src="js/require.js"></script>
+
+
+	<!-- Production
+	<script type="text/javascript" src="workflow-manager-min.js"></script>
+
+	<script>
+		app.initialize();
+	</script>
+-->
+</body>
+
+</html>
