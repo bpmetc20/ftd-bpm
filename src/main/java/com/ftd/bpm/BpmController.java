@@ -71,4 +71,12 @@ public class BpmController {
         }
         return result;
     }
+    public String completeActiveTask() {
+        List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().active().list();
+        if (!processInstances.isEmpty())
+            return completeActiveTask(processInstances.get(0).getDeploymentId());
+        else
+            return "";
+    }
+
 }
