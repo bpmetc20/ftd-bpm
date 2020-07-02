@@ -61,7 +61,7 @@ public class CreateUserTaskFeature extends AbstractCreateFastBPMNFeature {
     UserTask newUserTask = new UserTask();
     newUserTask.setExtensionId(customUserTaskId);
     
-    boolean isCustomNameSet = true; // always use custom name
+    boolean isCustomNameSet = false; 
     
     // Process custom user tasks
     if (newUserTask.isExtended()) {
@@ -143,8 +143,8 @@ public class CreateUserTaskFeature extends AbstractCreateFastBPMNFeature {
       }
     }
     
-    if (isCustomNameSet == false) {
-      addObjectToContainer(context, newUserTask, "User Task");
+    if (!newUserTask.isExtended()) {
+      addObjectToContainer(context, newUserTask, "FTD Generic");
     } else {
       addObjectToContainer(context, newUserTask);
     }
