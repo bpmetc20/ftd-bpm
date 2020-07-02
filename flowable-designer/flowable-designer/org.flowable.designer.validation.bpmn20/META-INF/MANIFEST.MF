@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Flowable Designer - Validate BPMN 2.0
+Bundle-SymbolicName: org.flowable.designer.validation.bpmn20;singleton:=true
+Bundle-Version: 5.22.0
+Bundle-Activator: org.flowable.designer.validation.bpmn20.bundle.Activator
+Bundle-Vendor: Flowable
+Require-Bundle: org.eclipse.core.runtime,
+ org.flowable.designer.eclipse,
+ org.eclipse.emf,
+ org.eclipse.graphiti.mm,
+ org.eclipse.graphiti.ui,
+ org.eclipse.core.resources,
+ org.flowable.designer.gui,
+ org.apache.commons.lang,
+ org.flowable.designer.util,
+ org.flowable.designer.libs
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .,
+ jdi.jar,
+ jdimodel.jar
