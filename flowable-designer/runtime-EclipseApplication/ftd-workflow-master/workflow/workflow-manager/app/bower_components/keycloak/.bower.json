@@ -1,0 +1,27 @@
+{
+  "name": "keycloak",
+  "version": "2.1.0",
+  "main": "dist/keycloak.js",
+  "ignore": [
+    "**/.*"
+  ],
+  "description": "Keycloak adapter",
+  "keywords": [
+    "keycloak",
+    "sso",
+    "oauth",
+    "oauth2",
+    "authentication"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/keycloak/keycloak-js-bower",
+  "_release": "2.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.1.0",
+    "commit": "d2155693a2ecc0d6323a3a220e3f582a3dfdbea2"
+  },
+  "_source": "https://github.com/keycloak/keycloak-js-bower.git",
+  "_target": "2.1.0",
+  "_originalSource": "keycloak"
+}

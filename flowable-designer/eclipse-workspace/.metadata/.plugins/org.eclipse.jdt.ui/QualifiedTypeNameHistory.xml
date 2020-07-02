@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.activiti.designer.util.DiagramHandler"/>
+<fullyQualifiedTypeName name="org.eclipse.ui.wizards.IWizardDescriptor"/>
+<fullyQualifiedTypeName name="org.eclipse.jface.wizard.IWizard"/>
+<fullyQualifiedTypeName name="org.eclipse.jface.wizard.WizardDialog"/>
+<fullyQualifiedTypeName name="org.eclipse.jface.window.ApplicationWindow"/>
+<fullyQualifiedTypeName name="org.eclipse.swt.widgets.Shell"/>
+<fullyQualifiedTypeName name="javax.print.DocFlavor.URL"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+</qualifiedTypeNameHistroy>

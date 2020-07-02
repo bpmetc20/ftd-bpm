@@ -1,0 +1,55 @@
+<md-dialog aria-label="Upload new BPMN file" style="max-width:700px; min-width: 500px;">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 ng-if="!process">{{ 'uploadNew' | translate }} BPMN {{ 'fileGeni' | translate }}</h2>
+        	<h2 ng-if="process" >{{ 'newVerion' | translate}} {{ 'for' | translate }} "{{process.name}}"</h2>
+        	
+            <span flex></span>
+            
+            <md-button class="md-icon-button" ng-click="cancel()" ng-if="!inProgress">
+                <md-icon md-svg-src="img/icons/close.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    
+    <md-dialog-content layout-padding>
+    
+		<div layout="row" layout-align="center center" flex ng-if="inProgress">
+			<md-progress-circular md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+		</div>
+		
+		<form name="defintionForm" ng-show="!inProgress">
+			<section layout="row" layout-align="start center" flex>
+		
+				<md-input-container class="md-block" flex>
+					<label for="bpmnFileName">BPMN {{ 'file' | translate }}</label>
+					<input type="text" readonly id="bpmnFileName" name="bpmnFile" ng-model="bpmnFile.name" required style="text-overflow: ellipsis;"/>
+				</md-input-container>
+				
+				<input type="file" id="bpmnFile" name="bpmnFile" nlk-file-input="bpmnFile" required style="display: none"/>
+				
+				<md-button class="md-icon-button" onclick="(document.querySelector('#bpmnFile')).click()" ng-click="exception = false" ng-disabled="inProgress">
+					<md-icon md-svg-src="img/icons/drive-file.svg" aria-label="Close dialog"></md-icon>
+				</md-button>
+
+			</section>
+			<section layout="row" layout-align="start center" flex>
+				<md-input-container class="md-block" flex>
+					<label for="justification">{{ 'justification' | translate }}</label>
+					<input type="text" id="justification" name="justification" ng-model="justification" required/>
+				</md-input-container>
+			</section>
+		</form>
+		
+		<div ng-if="exception" role="alert" multiple style="font-size: 13px;color: red;">
+			<div class="exceptionMessage">{{exceptionMessage.message | translate}}</div>
+		</div>
+		
+	</md-dialog-content>
+	
+	<md-dialog-actions layout="row" layout-align="left center" class="dialogActions">
+		<md-button class="md-raised md-primary" ng-click="answer(bpmnFile)" ng-disabled="!defintionForm.$valid || inProgress">{{ 'confirm' | translate }}</md-button>
+		<md-button class="md-raised md-warn" ng-click="cancel()" ng-disabled="inProgress">{{ 'cancel' | translate }}</md-button>
+	</md-dialog-actions>
+	
+</md-dialog>

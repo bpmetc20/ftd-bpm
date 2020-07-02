@@ -1,0 +1,9 @@
+INDEX VERSION 1.4+/Users/osip.lisitsa/Desktop/FtdSolution/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+2917872557.index
+3081627726.index
+3789894588.index
+3809164842.index
+2244982492.index
+2695758985.index
+2832919652.index
+1668181896.index

@@ -1,0 +1,14 @@
+{
+  "name": "ngWig",
+  "homepage": "https://github.com/stevermeister/ngWig",
+  "version": "3.1.0",
+  "_release": "3.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.1.0",
+    "commit": "ac9bad83bc01a3db8049ebf08667581e171ea885"
+  },
+  "_source": "https://github.com/stevermeister/ngWig.git",
+  "_target": "^3.0.14",
+  "_originalSource": "ng-wig"
+}
