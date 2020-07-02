@@ -1,9 +1,4 @@
-INDEX VERSION 1.4+/Users/osip.lisitsa/Desktop/FtdSolution/runtime-EclipseApplication/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
-934021262.index
+INDEX VERSION 1.4+/Users/osip.lisitsa/Desktop/ftd-bpm/flowable-designer/runtime-EclipseApplication/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
 1668181896.index
-1950722908.index
-2309716147.index
 2832919652.index
-4056342589.index
-2108628110.index
 3789894588.index
