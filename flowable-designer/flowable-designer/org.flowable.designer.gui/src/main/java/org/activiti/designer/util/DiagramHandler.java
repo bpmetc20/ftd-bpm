@@ -18,7 +18,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 public class DiagramHandler {
-	public static final String processesFolder = System.getProperty("user.home") + "/Desktop/FtdS";
+	public static final String processesFolder = System.getProperty("user.home") + 
+			"/Desktop/FtdSolution/runtime-EclipseApplication/FTDSolutionDesigner/target/";
 	public static final String newProcessName = "NewProcess";
 
 	public static final String fullDiagramPath = System.getProperty("user.home") + "/Desktop/FtdSolution/runtime-EclipseApplication/FTDSolutionDesigner/target/";
