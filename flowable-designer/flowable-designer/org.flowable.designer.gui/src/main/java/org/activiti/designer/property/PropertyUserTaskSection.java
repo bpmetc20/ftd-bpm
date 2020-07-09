@@ -59,10 +59,10 @@ public class PropertyUserTaskSection extends ActivitiPropertySection implements 
 	private Combo groupCombo;
 	boolean userSelection = false;
 
-	private Map<String, String> loadedForms = new HashMap<>();
-	private Map<String, String> loadedUsers = new HashMap<>();
-	private Map<String, String> loadedGroups = new HashMap<>();
-	private Map<String, String> taskForms = new HashMap<>();
+	private Map<String, String> loadedForms = new HashMap<String, String>();
+	private Map<String, String> loadedUsers = new HashMap<String, String>();
+	private Map<String, String> loadedGroups = new HashMap<String, String>();
+	private Map<String, String> taskForms = new HashMap<String, String>();
 
 	protected Combo createComboboxMy(String[] values, int defaultSelectionIndex) {
 		Combo comboControl = new Combo(formComposite, SWT.READ_ONLY);
@@ -172,7 +172,7 @@ public class PropertyUserTaskSection extends ActivitiPropertySection implements 
 		formSelectButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
-				String formId = loadedForms.entrySet().stream()
+				String formId = (String) loadedForms.entrySet().stream()
 						.filter(e -> e.getValue().equals(formTypeCombo.getText())).map(Map.Entry::getKey).findFirst()
 						.orElse(null);
 				String url = formId != null? "https://165.227.16.142.nip.io:8443/orbeon/fr/orbeon/builder/edit/" + formId :
