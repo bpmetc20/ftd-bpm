@@ -1,6 +1,9 @@
 package org.activiti.designer.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -12,27 +15,41 @@ import java.util.Map;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
-
+import org.apache.http.HttpEntity;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContextBuilder;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import com.fasterxml.jackson.*;
+import com.fasterxml.jackson.core.json.*;
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.core.io.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class RestClient {
 
 	private static CredentialsProvider provider;
 	private static SSLConnectionSocketFactory sslsf;
 	private static String ftdProxyRsPrefix = "https://165.227.16.142.nip.io:8443/ftdproxyrs/";
+	private static String modelsUrl = ftdProxyRsPrefix + "models";
+	private static String modelUrl = modelsUrl + "/%s";
+	private static String modelXmlSourceUrl = modelsUrl + "/%s/source.xml";
 	private static String user = "rest";
 	private static String password = "test";
 	
@@ -63,10 +80,59 @@ public class RestClient {
 		return getCollection(ftdProxyRsPrefix + "groups");
 	}
 	
-	@SuppressWarnings("unchecked")
+	// returns a hash map with pairs where key is modelId and value is modelName
+	// for example
+	//        "47d00c1c-c23a-11ea-82a3-ae1447660022": "my-test-model2",
+	//        "f2c9df38-c31f-11ea-838e-ae1447660022": "test-model3",
+	//        "92d75738-c236-11ea-82a3-ae1447660022": "my-test-model",
+	//        "effbd28f-b678-11ea-b7bf-ae1447660022": "Model name"
+	public static Map<String, String> getModels() {
+		return getCollection(modelsUrl);
+	}
+
+	// returns model source in form of xml string by modelId
+	public static String getModelSource(String modelId) {
+		byte[] modelSource = getBytes(String.format(modelXmlSourceUrl, modelId));
+		return modelSource != null? new String(modelSource) : ""; 
+	}
+
+	// stores a new model with given name and model source
+	// returns modelId of a newly stored model
+	public static String saveNewModel(String name, String modelXmlSource) {
+		String modelId = createNewModel(name);
+		return updateModelSource(modelId, modelXmlSource)? modelId : null;
+	}
+	
+	// updates model source for a given modelId
+	public static boolean updateModelSource(String modelId, String modelXmlSource) {
+		return putFile(String.format(modelXmlSourceUrl, modelId), modelXmlSource.getBytes());
+	}
+	
+	// creates a model with given name (this is an internal method) 
+	private static String createNewModel(String name) {
+		MapData mapData = new MapData();
+		Map<String, String> map = new HashMap<>();
+		mapData.setMap(map);
+		map.put("name", name);
+		MapData result = post(modelsUrl, mapData, MapData.class);
+		return result != null && result.getMap().size() != 0? 
+				result.getMap().get("id") : "";
+	}
+	
+	// deletes model by modelId
+	public static boolean deleteModel(String modelId) {
+		return delete(String.format(modelUrl, modelId));
+	}
+	
 	private static Map<String, String> getCollection(String url) {
-		HttpGet request = new HttpGet(url);
-		Map<String, String> collection;
+		MapData mapData = get(url, MapData.class);
+		return mapData.getMap();
+	}
+	
+	
+	private static boolean delete(String url) {
+		boolean result = false;
+		HttpDelete request = new HttpDelete(url);
 		try (CloseableHttpClient httpClient = HttpClients.custom()
 				.setSSLSocketFactory(sslsf)
 				.setHostnameVerifier(createHostnameVerifier())
@@ -74,21 +140,152 @@ public class RestClient {
 				.build();
 				CloseableHttpResponse response = httpClient.execute(request)) {
 			
-			request.addHeader("Accept", "application/json");
-			request.addHeader("Content-Type", "application/json");
-
 			if (response.getStatusLine().getStatusCode() != 200) {
 				throw new Exception("couldn't invoke url ");
 			}
-			collection = new ObjectMapper().readValue(response.getEntity().getContent(), Map.class);
-			
+			result = true;
 		} catch (Exception ex) {
-			// TODO bring error pop-up window
-			collection = new HashMap<>();
+		}
+
+		return result;
+	}
+	
+	private static boolean putFile(String url, byte[] data) {
+		boolean result = false;
+		HttpPut request = new HttpPut(url);
+		HttpEntity entity = MultipartEntityBuilder
+			    .create()
+			    .addBinaryBody("upload_file", data, 
+			    		ContentType.create("application/octet-stream"), "filename")
+			    .build();
+		
+		request.setEntity(entity);
+		
+		try (CloseableHttpClient httpClient = HttpClients.custom()
+				.setSSLSocketFactory(sslsf)
+				.setHostnameVerifier(createHostnameVerifier())
+				.setDefaultCredentialsProvider(provider)
+				.build();
+				CloseableHttpResponse response = httpClient.execute(request)) {
+			
+			if (response.getStatusLine().getStatusCode() != 200) {
+				throw new Exception("couldn't invoke url ");
+			}
+			result = true;
+		} catch (Exception ex) {
+		}
+
+		return result;
+	}
+	
+	private static <T> T post(String url, Object data, Class<T> cls) {
+		HttpPost request = new HttpPost(url);
+		request.addHeader("Accept", "application/json");
+		request.addHeader("Content-Type", "application/json");
+		
+		try {
+			request.setEntity(
+					new StringEntity(
+							new ObjectMapper().writeValueAsString(data)));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 		
-		return collection;
+		T result;
+		try (CloseableHttpClient httpClient = HttpClients.custom()
+				.setSSLSocketFactory(sslsf)
+				.setHostnameVerifier(createHostnameVerifier())
+				.setDefaultCredentialsProvider(provider)
+				.build();
+				CloseableHttpResponse response = httpClient.execute(request)) {
+			
+			if (response.getStatusLine().getStatusCode() != 200) {
+				throw new Exception("couldn't invoke url ");
+			}
+			result = new ObjectMapper().readValue(response.getEntity().getContent(), cls);
+			
+		} catch (Exception ex) {
+			result = null;
+		}
+		
+		return result;
 	}
+	
+	private static <T> T get(String url, Class<T> cls) {
+		HttpGet request = new HttpGet(url);
+		request.addHeader("Accept", "application/json");
+		request.addHeader("Content-Type", "application/json");
+		T result;
+		try (CloseableHttpClient httpClient = HttpClients.custom()
+				.setSSLSocketFactory(sslsf)
+				.setHostnameVerifier(createHostnameVerifier())
+				.setDefaultCredentialsProvider(provider)
+				.build();
+				CloseableHttpResponse response = httpClient.execute(request)) {
+			
+			if (response.getStatusLine().getStatusCode() != 200) {
+				throw new Exception("couldn't invoke url ");
+			}
+			result = new ObjectMapper().readValue(response.getEntity().getContent(), cls);
+			
+		} catch (Exception ex) {
+			result = null;
+		}
+		
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static byte[] getBytes(String url) {
+		HttpGet request = new HttpGet(url);
+		request.addHeader("Accept", "application/octet-stream");
+		byte[] result;
+		try (CloseableHttpClient httpClient = HttpClients.custom()
+				.setSSLSocketFactory(sslsf)
+				.setHostnameVerifier(createHostnameVerifier())
+				.setDefaultCredentialsProvider(provider)
+				.build();
+				CloseableHttpResponse response = httpClient.execute(request)) {
+			
+			if (response.getStatusLine().getStatusCode() != 200) {
+				throw new Exception("couldn't invoke url ");
+			}
+			result = readAllBytes(response.getEntity().getContent());
+			
+		} catch (Exception ex) {
+			result = null;
+		}
+		
+		return result;
+	}
+	
+	public static byte[] readAllBytes(InputStream inputStream) throws IOException {
+	    final int bufLen = 4 * 0x400; // 4KB
+	    byte[] buf = new byte[bufLen];
+	    int readLen;
+	    IOException exception = null;
+
+	    try {
+	        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+	            while ((readLen = inputStream.read(buf, 0, bufLen)) != -1)
+	                outputStream.write(buf, 0, readLen);
+
+	            return outputStream.toByteArray();
+	        }
+	    } catch (IOException e) {
+	        exception = e;
+	        throw e;
+	    } finally {
+	        if (exception == null) inputStream.close();
+	        else try {
+	            inputStream.close();
+	        } catch (IOException e) {
+	            exception.addSuppressed(e);
+	        }
+	    }
+	}
+	
 
 	private static TrustStrategy createTrustAllStrategy() {
 		return new TrustStrategy() {

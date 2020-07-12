@@ -10,11 +10,16 @@ import org.eclipse.swt.widgets.*;
 import java.awt.Window;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.activiti.designer.eclipse.common.ActivitiPlugin;
 import org.activiti.designer.eclipse.editor.ActivitiDiagramEditorInput;
 import org.activiti.designer.util.ActivitiConstants;
 import org.activiti.designer.util.DiagramHandler;
+import org.activiti.designer.util.RestClient;
 import org.activiti.designer.util.editor.BpmnMemoryModel;
 import org.activiti.designer.util.editor.ModelHandler;
 import org.eclipse.core.commands.AbstractHandler;
@@ -43,12 +48,16 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.LabelProvider;
 
 public class LoadProcessHandler extends AbstractHandler {
+	
+	private Map<String, String> loadedModels = new HashMap<String, String>();
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		
-		String[] tasksArray = {"FTDGeneric", "FTDProposal", "FTDStartup", "FTNew", "FTDAssigner", "FTDKickOff", "FTDClientProposal"};
+		retrieveModels();
+		
+		String[] tasksArray = buildModelssList();
 		String result = selectProcess(window, tasksArray);		
 		
 		
@@ -80,5 +89,15 @@ public class LoadProcessHandler extends AbstractHandler {
             selected = (String) dialog.getFirstResult();
         }
         return selected;
+	}
+	
+	private void retrieveModels() {
+		loadedModels = RestClient.getModels();
+	}
+	
+	private String[] buildModelssList() {
+		List<String> values = new ArrayList<String>(loadedModels.values());
+		Collections.sort(values);
+		return values.toArray(new String[0]);
 	}
 }
