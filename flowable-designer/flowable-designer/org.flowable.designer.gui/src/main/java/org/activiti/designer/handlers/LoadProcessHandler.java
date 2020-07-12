@@ -9,11 +9,18 @@ import org.eclipse.swt.widgets.*;
 
 import java.awt.Window;
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 
 import org.activiti.designer.eclipse.common.ActivitiPlugin;
 import org.activiti.designer.eclipse.editor.ActivitiDiagramEditorInput;
@@ -50,25 +57,44 @@ import org.eclipse.jface.viewers.LabelProvider;
 public class LoadProcessHandler extends AbstractHandler {
 	
 	private Map<String, String> loadedModels = new HashMap<String, String>();
+	private String modelId = "";
+	
+	public class BreakLoopException  extends RuntimeException {	}
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		
-		retrieveModels();
+		loadedModels = RestClient.getModels();
+		final String[] tasksArray = buildModelssList();
 		
-		String[] tasksArray = buildModelssList();
-		String result = selectProcess(window, tasksArray);		
+		if (tasksArray != null && tasksArray.length > 0) {
+			String modelName = selectProcess(window, tasksArray);		
 		
-		
-		//String result = MyFileDialog.openDialog(window.getShell());
-		if (!result.isEmpty()) {
-			String diagramFullPath = DiagramHandler.processesFolder + result + ".bpmn";
-			File file  = new File(diagramFullPath);
-			IPath location= Path.fromOSString(file.getAbsolutePath()); 
-			IFile ifile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
-			DiagramHandler.openDiagramForBpmnFile(ifile);
-		}		
+			if (!modelName.isEmpty()) {
+				if(!DiagramHandler.isDiagramExist(modelName)) { 
+					modelId = "";
+			
+					try {
+						loadedModels.forEach((key, value) -> {
+							if (value.equals(modelName)) {
+								modelId = key;
+								throw new BreakLoopException();
+							}
+						});
+					} catch (BreakLoopException e) {
+						// here you know that your condition has been met at least once
+					}			
+					if (!modelId.isEmpty()) {				
+						String diagram = RestClient.getModelSource(modelId);				
+						if (diagram.isEmpty() || DiagramHandler.writeDiagramToFile(modelName, diagram)) {						
+							//
+						}
+					}
+				}
+				DiagramHandler.openDiagramForBpmnFile(modelName);					
+			}
+		}
 		return window;		
 	}
 	
@@ -91,13 +117,9 @@ public class LoadProcessHandler extends AbstractHandler {
         return selected;
 	}
 	
-	private void retrieveModels() {
-		loadedModels = RestClient.getModels();
-	}
-	
 	private String[] buildModelssList() {
 		List<String> values = new ArrayList<String>(loadedModels.values());
 		Collections.sort(values);
 		return values.toArray(new String[0]);
-	}
+	}	
 }

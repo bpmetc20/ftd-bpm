@@ -1,6 +1,10 @@
 package org.activiti.designer.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import org.activiti.designer.eclipse.common.ActivitiPlugin;
 import org.eclipse.core.commands.ExecutionException;
@@ -30,7 +34,24 @@ public class DiagramHandler {
 		IPath location= Path.fromOSString(file.getAbsolutePath()); 
 		IFile ifile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
 		openDiagramForBpmnFile(ifile);
-	 }
+	}
+	
+	public static boolean isDiagramExist(String diagramName) {
+		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";					
+		File file  = new File(fullFileName);
+		return file.exists() && !file.isDirectory();  
+	}
+	
+	public static boolean writeDiagramToFile(String diagramName, String xmlString) {
+		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";
+		try {
+			Files.write(Paths.get(fullFileName), xmlString.getBytes(), StandardOpenOption.CREATE);
+			return true;
+		} catch (IOException e) {
+			System.out.print(e.getMessage());
+		}
+		return false;
+	}
 	
 	public static String createNewProcessFolder() {
 		int i = 0;

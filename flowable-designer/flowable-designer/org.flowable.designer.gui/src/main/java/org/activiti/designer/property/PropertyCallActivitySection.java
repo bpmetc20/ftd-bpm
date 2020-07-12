@@ -15,6 +15,8 @@ package org.activiti.designer.property;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,6 +30,7 @@ import org.activiti.designer.eclipse.common.ActivitiPlugin;
 import org.activiti.designer.handlers.MyFileDialog;
 import org.activiti.designer.util.ActivitiConstants;
 import org.activiti.designer.util.DiagramHandler;
+import org.activiti.designer.util.RestClient;
 import org.activiti.designer.util.dialog.ActivitiResourceSelectionDialog;
 import org.activiti.designer.util.workspace.ActivitiWorkspaceUtil;
 import org.apache.commons.lang.StringUtils;
@@ -86,6 +89,9 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
    */
   private Button chooseCalledElementButton;
   
+  private Map<String, String> loadedModels = new HashMap<String, String>();
+  private String modelId = "";
+  
   protected Combo createComboboxMy(String[] values, int defaultSelectionIndex) {
 		Combo comboControl = new Combo(formComposite, SWT.READ_ONLY);
 		FormData data = new FormData();
@@ -114,6 +120,8 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
   
   @Override
   public void createFormControls(TabbedPropertySheetPage aTabbedPropertySheetPage) {
+	loadedModels = RestClient.getModels();  
+	  
     //openCalledElementButton = getWidgetFactory().createButton(formComposite, StringUtils.EMPTY, SWT.PUSH);
     //openCalledElementButton.setImage(Activator.getImage(PluginImage.ACTION_GO));
     //FormData data = new FormData();
@@ -130,7 +138,7 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
     //chooseCalledElementButton.setLayoutData(data);
     //chooseCalledElementButton.addSelectionListener(chooseCalledElementSelected);
     
-	String[] tasksArray = {"FTDGeneric", "FTDProposal", "FTDStartup", "NewTask", "FTDAssigner", "FTDKickOff", "FTDClientProposal"};
+	String[] tasksArray = buildModelssList();
 	calledElementCombo = createComboboxMy(tasksArray, 0 );
     FormData formData = (FormData) calledElementCombo.getLayoutData();
     formData.right.offset = -80;
@@ -330,5 +338,11 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
     }
 
   } 
+  
+  private String[] buildModelssList() {
+	  List<String> values = new ArrayList<String>(loadedModels.values());
+	  Collections.sort(values);
+	  return values.toArray(new String[0]);
+  }
   
 }
