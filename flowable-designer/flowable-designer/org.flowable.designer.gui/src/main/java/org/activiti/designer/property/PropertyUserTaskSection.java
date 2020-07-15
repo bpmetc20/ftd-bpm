@@ -29,7 +29,6 @@ import org.activiti.designer.util.DiagramHandler;
 import org.activiti.designer.util.RestClient;
 import org.activiti.designer.util.eclipse.ActivitiUiUtil;
 import org.activiti.designer.util.extension.ExtensionUtil;
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
