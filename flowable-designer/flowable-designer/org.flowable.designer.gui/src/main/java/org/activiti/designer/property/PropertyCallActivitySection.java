@@ -87,9 +87,8 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
   /**
    * A button that allows to choose a called element among all currently found processes.
    */
-  private Button chooseCalledElementButton;
+  private Button chooseCalledElementButton;  
   
-  private Map<String, String> loadedModels = new HashMap<String, String>();
   private String modelId = "";
   
   protected Combo createComboboxMy(String[] values, int defaultSelectionIndex) {
@@ -120,9 +119,7 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
   
   @Override
   public void createFormControls(TabbedPropertySheetPage aTabbedPropertySheetPage) {
-	loadedModels = RestClient.getModels();  
-	  
-    //openCalledElementButton = getWidgetFactory().createButton(formComposite, StringUtils.EMPTY, SWT.PUSH);
+	//openCalledElementButton = getWidgetFactory().createButton(formComposite, StringUtils.EMPTY, SWT.PUSH);
     //openCalledElementButton.setImage(Activator.getImage(PluginImage.ACTION_GO));
     //FormData data = new FormData();
     //data.right = new FormAttachment(100, -HSPACE);
@@ -138,7 +135,7 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
     //chooseCalledElementButton.setLayoutData(data);
     //chooseCalledElementButton.addSelectionListener(chooseCalledElementSelected);
     
-	String[] tasksArray = buildModelssList();
+	String[] tasksArray = DiagramHandler.buildList(DiagramHandler.loadModels());
 	calledElementCombo = createComboboxMy(tasksArray, 0 );
     FormData formData = (FormData) calledElementCombo.getLayoutData();
     formData.right.offset = -80;
@@ -265,8 +262,12 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
 
     @Override
     public void widgetSelected(SelectionEvent event) {
-    	DiagramHandler.openDiagramForBpmnFile(calledElementCombo.getText());
-	
+    	String modelName = calledElementCombo.getText();
+    	IStatus status = DiagramHandler.openDiagramForBpmnFile(modelName);
+    	
+    	if (!status.isOK()) {
+			ErrorDialog.openError(Display.getCurrent().getActiveShell(), "Error Opening Activiti Diagram", modelName, status);
+		}
     	
       /*
        * final String calledElement = calledElementCombo.getText();
@@ -337,12 +338,6 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
       return resource.getFullPath().makeRelative().toString();
     }
 
-  } 
-  
-  private String[] buildModelssList() {
-	  List<String> values = new ArrayList<String>(loadedModels.values());
-	  Collections.sort(values);
-	  return values.toArray(new String[0]);
-  }
+  }   
   
 }

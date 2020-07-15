@@ -56,7 +56,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 
 public class LoadProcessHandler extends AbstractHandler {
 	
-	private Map<String, String> loadedModels = new HashMap<String, String>();
 	private String modelId = "";
 	
 	public class BreakLoopException  extends RuntimeException {	}
@@ -65,8 +64,8 @@ public class LoadProcessHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		
-		loadedModels = RestClient.getModels();
-		final String[] tasksArray = buildModelssList();
+		Map<String, String> loadedModels = DiagramHandler.loadModels();
+		final String[] tasksArray = DiagramHandler.buildList(loadedModels);
 		
 		if (tasksArray != null && tasksArray.length > 0) {
 			String modelName = selectProcess(window, tasksArray);		
@@ -88,11 +87,16 @@ public class LoadProcessHandler extends AbstractHandler {
 					if (!modelId.isEmpty()) {				
 						String diagram = RestClient.getModelSource(modelId);				
 						if (diagram.isEmpty() || DiagramHandler.writeDiagramToFile(modelName, diagram)) {						
-							//
+							ErrorDialog.openError(window.getShell(), DiagramHandler.errorMessage, modelName, 
+									new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", new PartInitException("Can't write diagram")));
+							return window;
 						}
 					}
 				}
-				DiagramHandler.openDiagramForBpmnFile(modelName);					
+				IStatus status = DiagramHandler.openDiagramForBpmnFile(modelName);	
+				if (!status.isOK()) {
+					ErrorDialog.openError(window.getShell(), "Error Opening Activiti Diagram", modelName, status);
+				}
 			}
 		}
 		return window;		
@@ -115,11 +119,5 @@ public class LoadProcessHandler extends AbstractHandler {
             selected = (String) dialog.getFirstResult();
         }
         return selected;
-	}
-	
-	private String[] buildModelssList() {
-		List<String> values = new ArrayList<String>(loadedModels.values());
-		Collections.sort(values);
-		return values.toArray(new String[0]);
-	}	
+	}		
 }
