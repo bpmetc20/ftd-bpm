@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileTime;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,32 +42,6 @@ public class DiagramHandler {
 	public static final String errorMessage = "Error Opening Activiti Diagram";
 	
 	private IFile diagramFile;
-	
-	
-	public static IStatus openDiagramForBpmnFile(String diagramName) {
-		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";
-		File file  = new File(fullFileName);
-		IPath location= Path.fromOSString(file.getAbsolutePath()); 
-		IFile ifile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
-		return openDiagramForBpmnFile(ifile);
-	}
-	
-	public static boolean isDiagramExist(String diagramName) {
-		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";					
-		File file  = new File(fullFileName);
-		return file.exists() && !file.isDirectory();  
-	}
-	
-	public static boolean writeDiagramToFile(String diagramName, String xmlString) {
-		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";
-		try {
-			Files.write(Paths.get(fullFileName), xmlString.getBytes(), StandardOpenOption.CREATE);
-			return true;
-		} catch (IOException e) {
-			System.out.print(e.getMessage());
-		}
-		return false;
-	}
 	
 	public static String createNewProcessFolder() {
 		int i = 0;
@@ -125,18 +100,60 @@ public class DiagramHandler {
 			
 		}
 		
-		//if(!DiagramHandler.isDiagramExist(modelName)) {
-		String diagram = RestClient.getModelSource(modelId);				
-		if (diagram.isEmpty() || !DiagramHandler.writeDiagramToFile(modelName, diagram)) {						
-			ErrorDialog.openError(shell, DiagramHandler.errorMessage, modelName, 
-			new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", 
-					new PartInitException("Can't write diagram")));
-			return;	
-		}										
+		boolean reloadModelFromCloud = false;
+				
+		if(!isDiagramExist(modelName)) 
+			reloadModelFromCloud = true;
+		else {
+			String fullFileName = fullDiagramPath +  modelName +  ".bpmn";
+			java.nio.file.Path path = Paths.get(fullFileName);
+			try {
+				FileTime fileTime = Files.getLastModifiedTime(path);
+				if (fileTime.toMillis() < updateTime)
+					reloadModelFromCloud = true;
+			} catch (IOException e) {
+				reloadModelFromCloud = true;
+			}
+		}
+			
+		if (reloadModelFromCloud) {
+			String diagram = RestClient.getModelSource(modelId);				
+			if (diagram.isEmpty() || !DiagramHandler.writeDiagramToFile(modelName, diagram)) {						
+				ErrorDialog.openError(shell, DiagramHandler.errorMessage, modelName, 
+						new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", 
+								new PartInitException("Can't write diagram")));
+				return;	
+			}
+		}
 		IStatus status = openDiagramForBpmnFile(modelName);	
 		if (!status.isOK()) {
 			ErrorDialog.openError(shell, "Error Opening Activiti Diagram", modelName, status);
 		}		
+	}
+	
+	public static IStatus openDiagramForBpmnFile(String diagramName) {
+		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";
+		File file  = new File(fullFileName);
+		IPath location= Path.fromOSString(file.getAbsolutePath()); 
+		IFile ifile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
+		return openDiagramForBpmnFile(ifile);
+	}
+	
+	private static boolean isDiagramExist(String diagramName) {
+		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";					
+		File file  = new File(fullFileName);
+		return file.exists() && !file.isDirectory();  
+	}
+	
+	private static boolean writeDiagramToFile(String diagramName, String xmlString) {
+		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";
+		try {
+			Files.write(Paths.get(fullFileName), xmlString.getBytes(), StandardOpenOption.CREATE);
+			return true;
+		} catch (IOException e) {
+			System.out.print(e.getMessage());
+		}
+		return false;
 	}
 	
 	private static IStatus openDiagramForBpmnFile(IFile dataFile) {
