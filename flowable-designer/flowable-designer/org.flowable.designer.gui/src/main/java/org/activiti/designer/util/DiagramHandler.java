@@ -8,10 +8,13 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.activiti.designer.eclipse.common.ActivitiPlugin;
+import org.activiti.designer.util.workspace.ActivitiWorkspaceUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -22,6 +25,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+import org.activiti.designer.eclipse.util.FileService;
 
 public class DiagramHandler {
 	public static final String processesFolder = System.getProperty("user.home") + 
@@ -30,6 +34,8 @@ public class DiagramHandler {
 
 	public static final String fullDiagramPath = System.getProperty("user.home") + "/Desktop/FtdSolution/runtime-EclipseApplication/FTDSolutionDesigner/target/";
 	public static final String errorMessage = "Error Opening Activiti Diagram";
+	
+	private IFile diagramFile;
 	
 	
 	public static IStatus openDiagramForBpmnFile(String diagramName) {
@@ -108,7 +114,7 @@ public class DiagramHandler {
 		return new Status(IStatus.INFO, ActivitiPlugin.getID(), errorMessage, new PartInitException("Can't find diagram")); 
 	 }
 	
-	 public static Map<String, String> loadModels() { 
+	 public static List<Map<String, String>> loadModels() { 
 		return RestClient.getModels();
 	 }
 	 
@@ -130,27 +136,7 @@ public class DiagramHandler {
 		 loadedForms.put("ed2e8dfd324d9a11e5cf28aa7ef8f82950c32397", "Submit Proposal to PST");
 		 loadedForms.put("173d32236635b57bd09896e6bd7e51d548b77bf2", "PST Proposal Approval");
 		 return loadedForms;
-	 }
-	 
-	 public static Map<String, String> loadTaskForms() {
-		  Map<String, String>taskForms = new HashMap<String, String>();
-		  taskForms.put("2a3d7d0e3e4aca9a24893aaaf2e449e837de1f5c", "Propose PO");
-		  taskForms.put("d547a52eeae2e8145fe314d2410aaf867146502c", "Approve PO");
-		  taskForms.put("650e3c8dc56fcc9bcc35070ee744789b8073d245", "Escalate PO");
-		  taskForms.put("Revise Proposal", "Review Proposal");
-			
-			
-		  taskForms.put("Gather New Project Information", "Gather New Project Information");
-		  taskForms.put("Assign Proposal Team", "Assign Proposal Team");
-		  taskForms.put("Contact External Expert", "Contact External Expert for Proposal Input and Availability");
-		  taskForms.put("Project Startup Date", "Project Startup Data");
-			
-		  taskForms.put("Draft Proposal", "Submit Draft Proposal to Client");
-		  taskForms.put("Submit Proposal", "Submit Proposal");
-		  taskForms.put("ed2e8dfd324d9a11e5cf28aa7ef8f82950c32397", "Submit Proposal to PST");
-		  taskForms.put("173d32236635b57bd09896e6bd7e51d548b77bf2", "PST Proposal Approval");
-		  return taskForms;
-	 }
+	 }	 
 	 
 	 public static Map<String, String> loadUsers() {
 		 return RestClient.getUsers();
@@ -161,9 +147,27 @@ public class DiagramHandler {
 	 }
 
 	
-	 public static String[] buildList(Map<String, String> loadedModels) {		
-		  List<String> values = new ArrayList<String>(loadedModels.values());
+	 public static String[] buildListFromMap(Map<String, String> mapString) {		
+		  List<String> values = new ArrayList<String>(mapString.values());
 		  Collections.sort(values);
 		  return values.toArray(new String[0]);
-	  }
+	 }
+	 
+	 public static String[] buildListFromList(List<Map<String, String>> mapList, String propName) {	
+		 List<String> values = new ArrayList<String>();
+		 for(Map<String, String> model : mapList) {
+			 values.add(model.get(propName));
+		 }
+		 Collections.sort(values);
+		 return values.toArray(new String[0]);
+	 }
+	 
+	 public static void saveDiagram() {
+		 final Set<IFile> result = new HashSet<IFile>();
+		 final Set<IFile> projectResources = ActivitiWorkspaceUtil.getAllDiagramDataFiles();
+     }
+	 
+	 public void setDiagramFile(IFile diagramFileName) {
+		 this.diagramFile = diagramFileName;
+	 }
 }

@@ -2,7 +2,6 @@ package org.activiti.designer.handlers;
 
 import org.eclipse.swt.widgets.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,47 +20,17 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.LabelProvider;
 
-public class LoadProcessHandler extends AbstractHandler {
+public class SaveProcessHandler extends AbstractHandler {
 	
+	private String modelId = "";
+	
+	public final class BreakLoopException  extends RuntimeException {}
+
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		
-		List<Map<String, String>> loadedModels = DiagramHandler.loadModels();
-		final String[] tasksArray = DiagramHandler.buildListFromList(loadedModels, "name");
-				
-		if (tasksArray != null && tasksArray.length > 0) {
-			String modelName = selectProcess(window, tasksArray);		
-		
-			if (!modelName.isEmpty()) {
-				String modelId = "";
-				String lastUpdateTime = ""; 
-				
-				if(!DiagramHandler.isDiagramExist(modelName)) { 
-					modelId = "";
-			
-					for(Map<String, String> model : loadedModels) {
-						if (model.get("name").equals(modelName)) {
-							modelId = model.get("name");
-							lastUpdateTime = model.get("lastUpdateTime");
-						}
-					}
-					
-					if (!modelId.isEmpty()) {				
-						String diagram = RestClient.getModelSource(modelId);				
-						if (diagram.isEmpty() || DiagramHandler.writeDiagramToFile(modelName, diagram)) {						
-							ErrorDialog.openError(window.getShell(), DiagramHandler.errorMessage, modelName, 
-									new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", new PartInitException("Can't write diagram")));
-							return window;
-						}
-					}
-				}
-				IStatus status = DiagramHandler.openDiagramForBpmnFile(modelName);	
-				if (!status.isOK()) {
-					ErrorDialog.openError(window.getShell(), "Error Opening Activiti Diagram", modelName, status);
-				}
-			}
-		}
+		DiagramHandler.saveDiagram();
 		return window;		
 	}
 	

@@ -88,9 +88,7 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
    * A button that allows to choose a called element among all currently found processes.
    */
   private Button chooseCalledElementButton;  
-  
-  private String modelId = "";
-  
+    
   protected Combo createComboboxMy(String[] values, int defaultSelectionIndex) {
 		Combo comboControl = new Combo(formComposite, SWT.READ_ONLY);
 		FormData data = new FormData();
@@ -135,7 +133,8 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
     //chooseCalledElementButton.setLayoutData(data);
     //chooseCalledElementButton.addSelectionListener(chooseCalledElementSelected);
     
-	String[] tasksArray = DiagramHandler.buildList(DiagramHandler.loadModels());
+	List<Map<String, String>> loadModels = DiagramHandler.loadModels();
+	String[] tasksArray = DiagramHandler.buildListFromList(loadModels, "name");
 	calledElementCombo = createComboboxMy(tasksArray, 0 );
     FormData formData = (FormData) calledElementCombo.getLayoutData();
     formData.right.offset = -80;

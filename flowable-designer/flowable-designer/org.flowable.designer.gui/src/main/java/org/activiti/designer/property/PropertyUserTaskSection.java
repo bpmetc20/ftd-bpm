@@ -95,9 +95,9 @@ public class PropertyUserTaskSection extends ActivitiPropertySection implements 
 		
 		Map<String, String> loadedForms = DiagramHandler.loadForms();
 		
-		String[] usersValues = DiagramHandler.buildList(DiagramHandler.loadUsers());
-		String[] groupsValues = DiagramHandler.buildList(DiagramHandler.loadGroups());
-		String[] formsValues = DiagramHandler.buildList(loadedForms);
+		String[] usersValues = DiagramHandler.buildListFromMap(DiagramHandler.loadUsers());
+		String[] groupsValues = DiagramHandler.buildListFromMap(DiagramHandler.loadGroups());
+		String[] formsValues = DiagramHandler.buildListFromMap(loadedForms);
 		userCombo = createComboboxMy(usersValues, 0);
 		createLabel("Assignee", userCombo);
 	    

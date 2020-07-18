@@ -10,6 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.SSLException;
@@ -35,12 +36,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import com.fasterxml.jackson.*;
-import com.fasterxml.jackson.core.json.*;
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.core.io.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 public class RestClient {
 
@@ -82,12 +78,25 @@ public class RestClient {
 	
 	// returns a hash map with pairs where key is modelId and value is modelName
 	// for example
-	//        "47d00c1c-c23a-11ea-82a3-ae1447660022": "my-test-model2",
-	//        "f2c9df38-c31f-11ea-838e-ae1447660022": "test-model3",
-	//        "92d75738-c236-11ea-82a3-ae1447660022": "my-test-model",
-	//        "effbd28f-b678-11ea-b7bf-ae1447660022": "Model name"
-	public static Map<String, String> getModels() {
-		return getCollection(modelsUrl);
+	//	[
+	//     {
+	//         "name": "my-test-model2",
+	//         "id": "3b792c3b-c23a-11ea-82a3-ae1447660022",
+	//         "lastUpdateTime": "2020-07-09T16:16:34.991-07:00"
+	//     },
+	//     {
+	//         "name": "my-test-model2",
+	//         "id": "47d00c1c-c23a-11ea-82a3-ae1447660022",
+	//         "lastUpdateTime": "2020-07-09T16:16:55.693-07:00"
+	//     },
+	//     {
+	//         "name": "test-model4",
+	//         "id": "56d87ef9-c320-11ea-838e-ae1447660022",
+	//         "lastUpdateTime": "2020-07-10T20:08:23.625-07:00"
+	//     }
+	//    ]
+	public static List<Map<String, String>> getModels() {
+		return getCollectionsList(modelsUrl);
 	}
 
 	// returns model source in form of xml string by modelId
@@ -127,6 +136,11 @@ public class RestClient {
 	private static Map<String, String> getCollection(String url) {
 		MapData mapData = get(url, MapData.class);
 		return mapData.getMap();
+	}
+	
+	private static List<Map<String, String>> getCollectionsList(String url) {
+		MapListData mapListData = get(url, MapListData.class);
+		return mapListData.getMapList();
 	}
 	
 	
@@ -260,32 +274,6 @@ public class RestClient {
 		return result;
 	}
 	
-	public static byte[] readAllBytes(InputStream inputStream) throws IOException {
-	    final int bufLen = 4 * 0x400; // 4KB
-	    byte[] buf = new byte[bufLen];
-	    int readLen;
-	    IOException exception = null;
-
-	    try {
-	        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-	            while ((readLen = inputStream.read(buf, 0, bufLen)) != -1)
-	                outputStream.write(buf, 0, readLen);
-
-	            return outputStream.toByteArray();
-	        }
-	    } catch (IOException e) {
-	        exception = e;
-	        throw e;
-	    } finally {
-	        if (exception == null) inputStream.close();
-	        else try {
-	            inputStream.close();
-	        } catch (IOException e) {
-	            exception.addSuppressed(e);
-	        }
-	    }
-	}
-	
 
 	private static TrustStrategy createTrustAllStrategy() {
 		return new TrustStrategy() {
@@ -315,5 +303,32 @@ public class RestClient {
 			}
 		};
 	}
+	
+	public static byte[] readAllBytes(InputStream inputStream) throws IOException {
+	    final int bufLen = 4 * 0x400; // 4KB
+	    byte[] buf = new byte[bufLen];
+	    int readLen;
+	    IOException exception = null;
+
+	    try {
+	        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+	            while ((readLen = inputStream.read(buf, 0, bufLen)) != -1)
+	                outputStream.write(buf, 0, readLen);
+
+	            return outputStream.toByteArray();
+	        }
+	    } catch (IOException e) {
+	        exception = e;
+	        throw e;
+	    } finally {
+	        if (exception == null) inputStream.close();
+	        else try {
+	            inputStream.close();
+	        } catch (IOException e) {
+	            exception.addSuppressed(e);
+	        }
+	    }
+	}
+
 
 }
