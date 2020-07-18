@@ -2,6 +2,9 @@ package org.activiti.designer.handlers;
 
 import org.eclipse.swt.widgets.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -35,31 +38,43 @@ public class LoadProcessHandler extends AbstractHandler {
 		
 			if (!modelName.isEmpty()) {
 				String modelId = "";
-				String lastUpdateTime = ""; 
+				long updateTime = 0; 
 				
-				if(!DiagramHandler.isDiagramExist(modelName)) { 
-					modelId = "";
-			
-					for(Map<String, String> model : loadedModels) {
-						if (model.get("name").equals(modelName)) {
-							modelId = model.get("name");
-							lastUpdateTime = model.get("lastUpdateTime");
-						}
-					}
-					
-					if (!modelId.isEmpty()) {				
-						String diagram = RestClient.getModelSource(modelId);				
-						if (diagram.isEmpty() || DiagramHandler.writeDiagramToFile(modelName, diagram)) {						
+				for(Map<String, String> model : loadedModels) {
+					if (model.get("name").equals(modelName)) {
+						modelId = model.get("id");
+						if (modelId.isEmpty()) {						
 							ErrorDialog.openError(window.getShell(), DiagramHandler.errorMessage, modelName, 
-									new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", new PartInitException("Can't write diagram")));
+									new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", new PartInitException("Can't find diagram")));
 							return window;
+						}	
+						
+						//"lastUpdateTime": "2020-07-10T20:08:23.625-07:00"
+						String lastUpdateTime = model.get("lastUpdateTime");
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+						try {
+							Date date = sdf.parse(lastUpdateTime);
+							updateTime = date.getTime();
+						} catch (ParseException ex)	{
+							
 						}
+						
+						//if(!DiagramHandler.isDiagramExist(modelName)) {
+						String diagram = RestClient.getModelSource(modelId);				
+						if (diagram.isEmpty() || !DiagramHandler.writeDiagramToFile(modelName, diagram)) {						
+							ErrorDialog.openError(window.getShell(), DiagramHandler.errorMessage, modelName, 
+							new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", new PartInitException("Can't write diagram")));
+							return window;	
+						}										
+						IStatus status = DiagramHandler.openDiagramForBpmnFile(modelName);	
+						if (!status.isOK()) {
+							ErrorDialog.openError(window.getShell(), "Error Opening Activiti Diagram", modelName, status);
+						}
+						return window;
 					}
-				}
-				IStatus status = DiagramHandler.openDiagramForBpmnFile(modelName);	
-				if (!status.isOK()) {
-					ErrorDialog.openError(window.getShell(), "Error Opening Activiti Diagram", modelName, status);
-				}
+				}										
+				ErrorDialog.openError(window.getShell(), DiagramHandler.errorMessage, modelName, 
+						new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", new PartInitException("Can't find diagram")));
 			}
 		}
 		return window;		
