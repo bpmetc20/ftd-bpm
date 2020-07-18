@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +24,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -99,7 +104,42 @@ public class DiagramHandler {
 		}		
 	}
 	
-	public static IStatus openDiagramForBpmnFile(IFile dataFile) {
+	public static void openDiagram(Map<String, String> model, Shell shell) {
+		String modelId = model.get("id");;
+		String modelName = model.get("name");
+		long updateTime = 0; 
+		
+		if (modelId.isEmpty()) {						
+			ErrorDialog.openError(shell, DiagramHandler.errorMessage, modelName, 
+					new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", new PartInitException("Can't find diagram")));
+			return;
+		}	
+		
+		//"lastUpdateTime": "2020-07-10T20:08:23.625-07:00"
+		String lastUpdateTime = model.get("lastUpdateTime");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+		try {
+			Date date = sdf.parse(lastUpdateTime);
+			updateTime = date.getTime();
+		} catch (ParseException ex)	{
+			
+		}
+		
+		//if(!DiagramHandler.isDiagramExist(modelName)) {
+		String diagram = RestClient.getModelSource(modelId);				
+		if (diagram.isEmpty() || !DiagramHandler.writeDiagramToFile(modelName, diagram)) {						
+			ErrorDialog.openError(shell, DiagramHandler.errorMessage, modelName, 
+			new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", 
+					new PartInitException("Can't write diagram")));
+			return;	
+		}										
+		IStatus status = openDiagramForBpmnFile(modelName);	
+		if (!status.isOK()) {
+			ErrorDialog.openError(shell, "Error Opening Activiti Diagram", modelName, status);
+		}		
+	}
+	
+	private static IStatus openDiagramForBpmnFile(IFile dataFile) {
 		IStatus status = new Status(IStatus.OK, ActivitiPlugin.getID(), errorMessage, null); 
 		if (dataFile.exists()) {
 	        final IWorkbenchPage activePage= PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();

@@ -13,33 +13,21 @@
  */
 package org.activiti.designer.property;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import org.activiti.bpmn.model.CallActivity;
-import org.activiti.designer.Activator;
-import org.activiti.designer.PluginImage;
 import org.activiti.designer.command.BpmnProcessModelUpdater;
 import org.activiti.designer.eclipse.common.ActivitiPlugin;
-import org.activiti.designer.handlers.MyFileDialog;
-import org.activiti.designer.util.ActivitiConstants;
 import org.activiti.designer.util.DiagramHandler;
-import org.activiti.designer.util.RestClient;
-import org.activiti.designer.util.dialog.ActivitiResourceSelectionDialog;
 import org.activiti.designer.util.workspace.ActivitiWorkspaceUtil;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -54,14 +42,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.TwoPaneElementSelector;
-import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -87,7 +69,9 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
   /**
    * A button that allows to choose a called element among all currently found processes.
    */
-  private Button chooseCalledElementButton;  
+  private Button chooseCalledElementButton; 
+  
+  private List<Map<String, String>> loadModels; 
     
   protected Combo createComboboxMy(String[] values, int defaultSelectionIndex) {
 		Combo comboControl = new Combo(formComposite, SWT.READ_ONLY);
@@ -133,7 +117,7 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
     //chooseCalledElementButton.setLayoutData(data);
     //chooseCalledElementButton.addSelectionListener(chooseCalledElementSelected);
     
-	List<Map<String, String>> loadModels = DiagramHandler.loadModels();
+	loadModels = DiagramHandler.loadModels();
 	String[] tasksArray = DiagramHandler.buildListFromList(loadModels, "name");
 	calledElementCombo = createComboboxMy(tasksArray, 0 );
     FormData formData = (FormData) calledElementCombo.getLayoutData();
@@ -262,6 +246,17 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
     @Override
     public void widgetSelected(SelectionEvent event) {
     	String modelName = calledElementCombo.getText();
+    	
+    	for(Map<String, String> model : loadModels) {
+			if (model.get("name").equals(modelName)) {
+				DiagramHandler.openDiagram(model, Display.getCurrent().getActiveShell());
+				return;
+			}
+		}										
+		ErrorDialog.openError(Display.getCurrent().getActiveShell(), DiagramHandler.errorMessage, modelName, 
+				new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", new PartInitException("Can't find diagram")));
+	
+
     	IStatus status = DiagramHandler.openDiagramForBpmnFile(modelName);
     	
     	if (!status.isOK()) {

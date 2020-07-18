@@ -55,7 +55,7 @@ public class NewProcessHandler extends AbstractHandler {
 			File file  = new File(diagramFullPath);
 			IPath location= Path.fromOSString(file.getAbsolutePath()); 
 			IFile ifile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
-			DiagramHandler.openDiagramForBpmnFile(ifile);
+			//DiagramHandler.openDiagramForBpmnFile(ifile);
 		}	
 		return window;
 	}	
