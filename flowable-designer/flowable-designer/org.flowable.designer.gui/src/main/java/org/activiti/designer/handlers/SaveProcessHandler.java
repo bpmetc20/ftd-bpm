@@ -11,6 +11,7 @@ import org.activiti.designer.util.RestClient;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -30,7 +31,15 @@ public class SaveProcessHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		
-		DiagramHandler.saveDiagram();
+		try {
+			String dataFile = DiagramHandler.getCurrentDiagramFile().getName();
+			DiagramHandler.saveDiagram();
+		} catch (Exception e) {
+			ErrorDialog.openError(window.getShell(), DiagramHandler.errorSaveMessage, "", 
+					new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while saving diagram.", 
+							new PartInitException("Can't find diagram")));
+			
+		}
 		return window;		
 	}
 	

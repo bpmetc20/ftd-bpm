@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.activiti.designer.eclipse.common.ActivitiPlugin;
+import org.activiti.designer.eclipse.editor.ActivitiDiagramEditor;
+import org.activiti.designer.eclipse.editor.ActivitiDiagramEditorInput;
 import org.activiti.designer.util.workspace.ActivitiWorkspaceUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -26,6 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -40,6 +43,7 @@ public class DiagramHandler {
 
 	public static final String fullDiagramPath = System.getProperty("user.home") + "/Desktop/FtdSolution/runtime-EclipseApplication/FTDSolutionDesigner/target/";
 	public static final String errorMessage = "Error Opening Activiti Diagram";
+	public static final String errorSaveMessage = "Error Saving Activiti Diagram";
 	
 	private IFile diagramFile;
 	
@@ -129,47 +133,7 @@ public class DiagramHandler {
 		if (!status.isOK()) {
 			ErrorDialog.openError(shell, "Error Opening Activiti Diagram", modelName, status);
 		}		
-	}
-	
-	public static IStatus openDiagramForBpmnFile(String diagramName) {
-		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";
-		File file  = new File(fullFileName);
-		IPath location= Path.fromOSString(file.getAbsolutePath()); 
-		IFile ifile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
-		return openDiagramForBpmnFile(ifile);
-	}
-	
-	private static boolean isDiagramExist(String diagramName) {
-		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";					
-		File file  = new File(fullFileName);
-		return file.exists() && !file.isDirectory();  
-	}
-	
-	private static boolean writeDiagramToFile(String diagramName, String xmlString) {
-		String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";
-		try {
-			Files.write(Paths.get(fullFileName), xmlString.getBytes(), StandardOpenOption.CREATE);
-			return true;
-		} catch (IOException e) {
-			System.out.print(e.getMessage());
-		}
-		return false;
-	}
-	
-	private static IStatus openDiagramForBpmnFile(IFile dataFile) {
-		IStatus status = new Status(IStatus.OK, ActivitiPlugin.getID(), errorMessage, null); 
-		if (dataFile.exists()) {
-	        final IWorkbenchPage activePage= PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-	        try {
-	          IDE.openEditor(activePage, dataFile, ActivitiConstants.DIAGRAM_EDITOR_ID, true);
-	          return status;
-	        } catch (PartInitException exception) {
-	        	status =  new Status(IStatus.ERROR, ActivitiPlugin.getID(), errorMessage, exception);      
-	        	return status;
-	        }
-		}
-		return new Status(IStatus.INFO, ActivitiPlugin.getID(), errorMessage, new PartInitException("Can't find diagram")); 
-	 }
+	}	
 	
 	 public static List<Map<String, String>> loadModels() { 
 		return RestClient.getModels();
@@ -202,7 +166,6 @@ public class DiagramHandler {
 	 public static Map<String, String> loadGroups() {
 		 return RestClient.getGroups();
 	 }
-
 	
 	 public static String[] buildListFromMap(Map<String, String> mapString) {		
 		  List<String> values = new ArrayList<String>(mapString.values());
@@ -219,12 +182,61 @@ public class DiagramHandler {
 		 return values.toArray(new String[0]);
 	 }
 	 
-	 public static void saveDiagram() {
-		 final Set<IFile> result = new HashSet<IFile>();
-		 final Set<IFile> projectResources = ActivitiWorkspaceUtil.getAllDiagramDataFiles();
-     }
+	 public static IFile getCurrentDiagramFile() {
+		 return ActivitiDiagramEditor.get().getCurrentDiagramFile();
+	  }
 	 
-	 public void setDiagramFile(IFile diagramFileName) {
-		 this.diagramFile = diagramFileName;
-	 }
+	 public static void saveDiagram() {
+		 //final Set<IFile> result = new HashSet<IFile>();
+		 //final Set<IFile> projectResources = ActivitiWorkspaceUtil.getAllDiagramDataFiles();
+		 ActivitiDiagramEditor.get().doSave();
+     }		 
+	 
+	 private static IStatus openDiagramForBpmnFile(String diagramName) {
+			String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";
+			File file  = new File(fullFileName);
+			IPath location= Path.fromOSString(file.getAbsolutePath()); 
+			IFile ifile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
+			return openDiagramForBpmnFile(ifile);
+		}
+		
+		private static boolean isDiagramExist(String diagramName) {
+			String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";					
+			File file  = new File(fullFileName);
+			return file.exists() && !file.isDirectory();  
+		}
+		
+		private static boolean writeDiagramToFile(String diagramName, String xmlString) {
+			String fullFileName = fullDiagramPath +  diagramName +  ".bpmn";
+			try {
+				Files.write(Paths.get(fullFileName), xmlString.getBytes(), StandardOpenOption.CREATE);
+				return true;
+			} catch (IOException e) {
+				System.out.print(e.getMessage());
+			}
+			return false;
+		}
+			
+		/**
+		 * Opens the given diagram specified by the given data file in a new editor. In case an error
+		 * occurs while doing so, opens an error dialog.
+		 *
+		 * @param dataFile the data file to use for the new editor to open
+		 *
+		 * TODO: this is a copy from PropertyCallActivitySection. Figure out how to make sure we do not double this
+		*/  
+		private static IStatus openDiagramForBpmnFile(IFile dataFile) {
+			IStatus status = new Status(IStatus.OK, ActivitiPlugin.getID(), errorMessage, null); 
+			if (dataFile.exists()) {
+		        final IWorkbenchPage activePage= PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		        try {
+		          IDE.openEditor(activePage, dataFile, ActivitiConstants.DIAGRAM_EDITOR_ID, true);
+		          return status;
+		        } catch (PartInitException exception) {
+		        	status =  new Status(IStatus.ERROR, ActivitiPlugin.getID(), errorMessage, exception);      
+		        	return status;
+		        }
+			}
+			return new Status(IStatus.INFO, ActivitiPlugin.getID(), errorMessage, new PartInitException("Can't find diagram")); 
+		 }
 }

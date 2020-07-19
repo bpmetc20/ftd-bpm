@@ -256,13 +256,7 @@ public class PropertyCallActivitySection extends ActivitiPropertySection impleme
 		ErrorDialog.openError(Display.getCurrent().getActiveShell(), DiagramHandler.errorMessage, modelName, 
 				new Status(IStatus.ERROR, ActivitiPlugin.getID(), "Error while opening new editor.", new PartInitException("Can't find diagram")));
 	
-
-    	IStatus status = DiagramHandler.openDiagramForBpmnFile(modelName);
-    	
-    	if (!status.isOK()) {
-			ErrorDialog.openError(Display.getCurrent().getActiveShell(), "Error Opening Activiti Diagram", modelName, status);
-		}
-    	
+   	
       /*
        * final String calledElement = calledElementCombo.getText();
 
