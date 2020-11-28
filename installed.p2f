@@ -1,0 +1,625 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?p2f version='1.0.0'?>
+<p2f version='1.0.0'>
+  <ius size='79'>
+    <iu id='org.eclipse.jst.ws.axis2tools.feature.feature.group' name='Axis2 Tools' version='1.1.401.v201909051708'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.cdo.epp.feature.group' name='CDO Model Repository EPP' version='4.11.0.v20200902-0811'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.ws.cxf.feature.feature.group' name='CXF Web Services' version='1.1.600.v202004091240'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jpt.jaxb.eclipselink.feature.feature.group' name='Dali Java Persistence Tools - EclipseLink JAXB Support' version='1.4.202.v201903221940'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jpt.jpa.eclipselink.feature.feature.group' name='Dali Java Persistence Tools - EclipseLink JPA Support' version='3.4.101.v201903221940'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jpt.jaxb.feature.feature.group' name='Dali Java Persistence Tools - JAXB Support' version='1.5.200.v202007091849'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jpt.jpadiagrameditor.feature.feature.group' name='Dali Java Persistence Tools - JPA Diagram Editor' version='1.2.300.v201903221940'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jpt.jpa.feature.feature.group' name='Dali Java Persistence Tools - JPA Support' version='3.6.1.v202007091901'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.e4.core.tools.feature.feature.group' name='Eclipse e4 Tools' version='4.17.0.v20200828-0909'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/eclipse/updates/4.17'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.wst.common.fproj.feature.group' name='Eclipse Faceted Project Framework' version='3.7.3.v202007142017'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.common.fproj.enablement.jdt.feature.group' name='Eclipse Faceted Project Framework JDT Enablement' version='3.13.1.v202007161535'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jdt.feature.group' name='Eclipse Java Development Tools' version='3.18.500.v20200902-1800'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/eclipse/updates/4.17'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.enterprise_ui.feature.feature.group' name='Eclipse Java EE Developer Tools' version='3.19.0.v202007100056'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.web_ui.feature.feature.group' name='Eclipse Java Web Developer Tools' version='3.19.0.v202008250115'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='epp.package.modeling' name='Eclipse Modeling Tools' version='4.17.0.20200910-1200'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.pde.feature.group' name='Eclipse Plug-in Development Environment' version='3.14.500.v20200902-1800'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/eclipse/updates/4.17'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.sdk.feature.group' name='Eclipse Project SDK' version='4.17.0.v20200902-1800'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/eclipse/updates/4.17'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.wst.web_ui.feature.feature.group' name='Eclipse Web Developer Tools' version='3.19.0.v202008242027'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.wst.xml_ui.feature.feature.group' name='Eclipse XML Editors and Tools' version='3.19.0.v202008192217'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.wst.xsl.feature.feature.group' name='Eclipse XSL Developer Tools' version='1.3.900.v202005251734'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.ecoretools.design.feature.group' name='Ecore Diagram Editor' version='3.3.2.201909230743'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.sdk.feature.group' name='EMF - Eclipse Modeling Framework SDK' version='2.23.0.v20200822-0801'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.ecp.emfforms.sdk.feature.feature.group' name='EMF Forms SDK' version='1.25.0.20200831-0551'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.query.sdk.feature.group' name='EMF Model Query SDK' version='1.12.0.201805030653'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.transaction.sdk.feature.group' name='EMF Model Transaction SDK' version='1.12.0.201805140824'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.parsley.sdk.feature.group' name='EMF Parsley SDK' version='1.12.0.v20200831-1344'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.parsley.sdk.source.feature.group' name='EMF Parsley SDK Developer Resources' version='1.12.0.v20200831-1344'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.validation.sdk.feature.group' name='EMF Validation Framework SDK' version='1.12.2.202008210805'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.gef.sdk.feature.group' name='GEF (MVC) SDK' version='3.11.0.201606061308'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.egit.feature.group' name='Git integration for Eclipse' version='5.9.0.202009080501-r'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.gmf.runtime.sdk.feature.group' name='Graphical Modeling Framework (GMF) Runtime SDK' version='1.13.0.202004160913'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.feature.feature.group' name='Graphiti (Incubation)' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.feature.source.feature.group' name='Graphiti (Incubation) Developer Resources' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.feature.examples.feature.group' name='Graphiti Examples (Incubation)' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.feature.examples.source.feature.group' name='Graphiti Examples (Incubation) Developer Resources' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.export.feature.feature.group' name='Graphiti Export (Incubation)' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.export.feature.source.feature.group' name='Graphiti Export (Incubation) Developer Resources' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.sdk.feature.feature.group' name='Graphiti SDK (Incubation)' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.sdk.feature.source.feature.group' name='Graphiti SDK (Incubation) Developer Resources' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.sdk.plus.feature.feature.group' name='Graphiti SDK Plus (Incubation)' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.sdk.plus.feature.source.feature.group' name='Graphiti SDK Plus (Incubation) Developer Resources' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.feature.tools.feature.group' name='Graphiti Tools (Incubation)' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.graphiti.feature.tools.source.feature.group' name='Graphiti Tools (Incubation) Developer Resources' version='0.17.0.202005151449'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/graphiti/updates/0.17.0'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.wst.jsdt.feature.feature.group' name='JavaScript Development Tools' version='2.3.100.v202008161908'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.wst.jsdt.chromium.debug.feature.feature.group' name='JavaScript Development Tools Chromium/V8 Remote Debugger' version='0.6.100.v201908270117'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.ws.jaxws.dom.feature.feature.group' name='JAX-WS DOM Tools' version='1.0.303.v201909051708'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.ws.jaxws.feature.feature.group' name='JAX-WS Tools' version='1.2.600.v202008101342'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jsf.feature.feature.group' name='JSF Tools' version='3.10.1.v202007170344'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.jsf.apache.trinidad.tagsupport.feature.feature.group' name='JSF Tools - Tag Library Metadata (Apache Trinidad)' version='2.6.1.v201902121810'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.webpageeditor.feature.feature.group' name='JSF Tools - Web Page Editor' version='2.9.1.v202007170344'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.server_adapters.feature.feature.group' name='JST Server Adapters' version='3.2.600.v202007170127'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.server_adapters.ext.feature.feature.group' name='JST Server Adapters Extensions' version='3.3.800.v202008171926'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jst.server_ui.feature.feature.group' name='JST Server UI' version='3.4.400.v202007170127'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.sonatype.m2e.mavenarchiver.feature.feature.group' name='m2e connector for mavenarchiver pom properties' version='0.17.5.202002191804'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.m2e.wtp.jaxrs.feature.feature.group' name='m2e-wtp - JAX-RS configurator for WTP (Optional)' version='1.4.4.20200220-1005'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.m2e.wtp.jpa.feature.feature.group' name='m2e-wtp - JPA configurator for WTP (Optional)' version='1.4.4.20200220-1005'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.m2e.wtp.jsf.feature.feature.group' name='m2e-wtp - JSF configurator for WTP (Optional)' version='1.4.4.20200220-1005'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.m2e.wtp.feature.feature.group' name='m2e-wtp - Maven Integration for WTP' version='1.4.4.20200220-1005'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.epp.mpc.feature.group' name='Marketplace Client' version='1.8.4.v20200709-0857'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.compare.source.feature.group' name='Model comparison (EMF Compare) - Core - SDK' version='3.3.12.202008311302'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.compare.egit.feature.group' name='Model comparison (EMF Compare) - EGit support' version='3.3.12.202008311302'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.compare.ide.ui.source.feature.group' name='Model comparison (EMF Compare) - SDK' version='3.3.12.202008311302'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.emf.compare.diagram.sirius.source.feature.group' name='Model comparison (EMF Compare) - Sirius support (Experimental)- SDK' version='3.3.12.202008311302'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.mylyn.wikitext_feature.feature.group' name='Mylyn WikiText' version='3.0.38.202008172112'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.ocl.all.sdk.feature.group' name='OCL Classic SDK: Ecore/UML Parsers,Evaluator,Edit' version='5.12.0.v20200608-1555'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.libra.facet.feature.feature.group' name='OSGi Bundle Facet (Incubation)' version='0.3.1.201609011955'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.libra.framework.editor.feature.feature.group' name='OSGi Framework Editor (Incubation)' version='0.3.1.201609011955'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.libra.framework.feature.feature.group' name='OSGi Framework Launchers (Incubation)' version='0.3.1.201609011955'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.php.feature.group' name='PHP Development Tools (PDT)' version='7.2.0.202005271851'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.php.composer.feature.group' name='PHP Development Tools (PDT) Composer Support' version='7.2.0.202005271851'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.rap.tools.feature.feature.group' name='RAP Tools' version='3.14.0.20200907-0812'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.tips.feature.feature.group' name='Tip of the Day UI Feature' version='0.2.1100.v20200724-0938'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/eclipse/updates/4.17'/>
+      </repositories>
+    </iu>
+    <iu id='org.sonatype.tycho.m2e.feature.feature.group' name='Tycho Project Configurators' version='0.8.1.201704211436'>
+      <repositories size='1'>
+        <repository location='https://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.8.1/N/0.8.1.201704211436/'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.uml2.sdk.feature.group' name='UML2 Extender SDK' version='5.5.1.v20200302-1312'>
+      <repositories size='4'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.libra.warproducts.feature.feature.group' name='WAR Products (Incubation)' version='0.3.1.201609011955'>
+      <repositories size='5'>
+        <repository location='http://download.eclipse.org/releases/2020-06'/>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/2019-09/201909181001'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.wildwebdeveloper.feature.feature.group' name='Wild Web Developer' version='0.10.2.202008281220'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.wildwebdeveloper.xml.feature.feature.group' name='Wild Web Developer XML tools' version='0.10.2.202007231627'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.wst.server_adapters.feature.feature.group' name='WST Server Adapters' version='3.2.801.v202007170127'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.xsd.sdk.feature.group' name='XSD - XML Schema Definition SDK' version='2.23.0.v20200723-0820'>
+      <repositories size='3'>
+        <repository location='http://download.eclipse.org/releases/2020-09'/>
+        <repository location='https://download.eclipse.org/releases/latest'/>
+        <repository location='http://download.eclipse.org/releases/latest'/>
+      </repositories>
+    </iu>
+  </ius>
+</p2f>
